@@ -45,10 +45,16 @@
         color: black; /* Font color for house names and scores */
         font-weight: bold; /* Make the font bold */
         vertical-align: middle; /* Center text vertically */
-        padding-left: 25%; /* Move house names over 1/4 of the way */
       }
       .house-row {
         border-radius: 8px; /* Add rounded corners */
+      }
+      .house-name {
+        padding-left: 25%; /* Move house names over 1/4 of the way */
+      }
+      .house-score {
+        padding-right: 25%; /* Add padding to leave 1/4 of the page on the right */
+        text-align: right; /* Align score to the right */
       }
     </style>
 </head>
@@ -79,8 +85,8 @@
               const houseName = house.Name ? house.Name.charAt(0).toUpperCase() + house.Name.slice(1).toLowerCase() : "House";
               const backgroundColor = houseColorMap[houseName] || "gray"; // Default color if name not found
               html += `<tr class="house-row" style="background-color: ${backgroundColor};">
-                <td>${houseName}</td>
-                <td>${house.Score || 0}</td>
+                <td class="house-name">${houseName}</td>
+                <td class="house-score">${house.Score || 0}</td>
               </tr>`;
             });
             html += "</tbody></table>";

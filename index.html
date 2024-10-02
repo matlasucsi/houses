@@ -25,14 +25,17 @@
         flex-direction: column; /* Allow flex layout for the table */
         justify-content: flex-start; /* Align content at the start */
       }
-      h1 {
-        text-align: center; /* Center the title */
-        font-size: 3em; /* Title font size */
-        margin: 1rem 0; /* Margin for spacing */
-        background-color: black; /* Title background color */
-        color: white; /* Title font color */
+      .header-container {
+        display: flex; /* Use flexbox for header layout */
+        justify-content: space-between; /* Space between title and button */
+        align-items: center; /* Center items vertically */
         padding: 1rem; /* Padding for spacing */
-        border-radius: 8px; /* Rounded corners */
+        background-color: black; /* Header background color */
+      }
+      h1 {
+        font-size: 3em; /* Title font size */
+        margin: 0; /* Remove margin */
+        color: white; /* Title font color */
       }
       table {
         width: 100%;
@@ -57,26 +60,25 @@
         text-align: right; /* Align score to the right */
       }
       .refresh-button {
-        position: absolute; /* Position button at the top right */
-        right: 20px; /* Right margin */
-        top: 20px; /* Top margin */
         padding: 1rem 2rem; /* Padding for the button */
         font-size: 1.5em; /* Button font size */
-        background-color: #3273dc; /* Button background color */
-        color: white; /* Button text color */
+        background-color: white; /* Button background color */
+        color: black; /* Button text color */
         border: none; /* Remove border */
         border-radius: 8px; /* Rounded corners for button */
         cursor: pointer; /* Pointer cursor on hover */
       }
       .refresh-button:hover {
-        background-color: #0056b3; /* Darker shade on hover */
+        background-color: #f0f0f0; /* Light gray on hover */
       }
     </style>
 </head>
 <body>
-    <button class="refresh-button" onclick="location.reload()">Refresh Points</button> <!-- Refresh button at top right -->
     <div id="cc_embed_houses">
-        <h1>UCSI International School KL House Points</h1> <!-- Title with black background and white font -->
+        <div class="header-container">
+            <h1>UCSI International School KL House Points</h1>
+            <button class="refresh-button" onclick="location.reload()">Refresh Points</button> <!-- Refresh button -->
+        </div>
     </div>
     <script>
       const orgID = 4910; // Adjust orgID as needed
@@ -113,3 +115,4 @@
     </script>
 </body>
 </html>
+

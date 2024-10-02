@@ -19,7 +19,7 @@
       }
       #cc_embed_houses {
         width: 100%; /* Full width */
-        height: 100vh; /* Full height */
+        height: calc(100vh - 50px); /* Full height minus button height */
         overflow: auto; /* Enable scrolling if necessary */
         display: flex;
         flex-direction: column; /* Allow flex layout for the table */
@@ -56,12 +56,26 @@
         padding-right: 50%; /* Set right padding to 50% */
         text-align: right; /* Align score to the right */
       }
+      .refresh-button {
+        margin: 1rem auto; /* Center button with margins */
+        padding: 1rem 2rem; /* Padding for the button */
+        font-size: 1.5em; /* Button font size */
+        background-color: #3273dc; /* Button background color */
+        color: white; /* Button text color */
+        border: none; /* Remove border */
+        border-radius: 8px; /* Rounded corners for button */
+        cursor: pointer; /* Pointer cursor on hover */
+      }
+      .refresh-button:hover {
+        background-color: #0056b3; /* Darker shade on hover */
+      }
     </style>
 </head>
 <body>
     <div id="cc_embed_houses">
         <h1>UCSI International School KL House Points</h1> <!-- Title with black background and white font -->
     </div>
+    <button class="refresh-button" onclick="location.reload()">Refresh</button> <!-- Refresh button -->
     <script>
       const orgID = 4910; // Adjust orgID as needed
 

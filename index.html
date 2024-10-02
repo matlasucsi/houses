@@ -43,10 +43,34 @@
 
       // Mapping of house names to colors
       const houseColorMap = {
-          "ambar": "yellow",
-          "zamrud": "green",
-          "delima": "red",
-          "nilam": "blue"
+          "Ambar": "yellow",
+          "Zamrud": "green",
+          "Delima": "red",
+          "Nilam": "blue"
       };
 
-      fetch(`https:
+      fetch(`https://crittercoinapi.azurewebsites.net/api/GetHouses?orgid=${orgID}&realtime=true`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.Houses && data.Houses.length) {
+            // Sort houses by Score in descending order
+            data.Houses.sort((a, b) => (b.Score || 0) - (a.Score || 0));
+
+            let html = "<table><tbody>";
+            data.Houses.forEach((house) => {
+              const houseName = house.Name ? house.Name.charAt(0).toUpperCase() + house.Name.slice(1).toLowerCase() : "House";
+              const backgroundColor = houseColorMap[houseName.toLowerCase()] || "gray"; // Default color if name not found
+              html += `<tr class="house-row" style="background-color: ${backgroundColor};">
+                <td>${houseName}</td>
+                <td>${house.Score || 0}</td>
+              </tr>`;
+            });
+            html += "</tbody></table>";
+            html += '<div class="attrition">Powered by <a href="https://www.crittercoin.com/" target="_blank">CritterCoin</a></div>';
+            document.getElementById("cc_embed_houses").innerHTML = html;
+          }
+        })
+        .catch(console.error);
+    </script>
+</body>
+</html>

@@ -41,7 +41,7 @@
     <script>
       const orgID = 4910; // Adjust orgID as needed
 
-      // Mapping of house names to colors
+      // Mapping of house names to specific colors
       const houseColorMap = {
           "Ambar": "yellow",
           "Zamrud": "green",
@@ -54,23 +54,4 @@
         .then(data => {
           if (data.Houses && data.Houses.length) {
             // Sort houses by Score in descending order
-            data.Houses.sort((a, b) => (b.Score || 0) - (a.Score || 0));
-
-            let html = "<table><tbody>";
-            data.Houses.forEach((house) => {
-              const houseName = house.Name ? house.Name.charAt(0).toUpperCase() + house.Name.slice(1).toLowerCase() : "House";
-              const backgroundColor = houseColorMap[houseName] || "gray"; // Default color if name not found
-              html += `<tr class="house-row" style="background-color: ${backgroundColor};">
-                <td>${houseName}</td>
-                <td>${house.Score || 0}</td>
-              </tr>`;
-            });
-            html += "</tbody></table>";
-            html += '<div class="attrition">Powered by <a href="https://www.crittercoin.com/" target="_blank">CritterCoin</a></div>';
-            document.getElementById("cc_embed_houses").innerHTML = html;
-          }
-        })
-        .catch(console.error);
-    </script>
-</body>
-</html>
+            data.Houses.sort((a, b) => (b.

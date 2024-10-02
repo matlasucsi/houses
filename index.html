@@ -8,6 +8,8 @@
       body, html {
         margin: 0;
         padding: 0;
+        height: 100%; /* Ensure full height */
+        width: 100%; /* Ensure full width */
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         font-size: 1em;
         background-color: black; /* Set background to black */
@@ -16,6 +18,11 @@
       a {
         text-decoration: none;
         color: #3273dc;
+      }
+      #cc_embed_houses {
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scrolling if necessary */
       }
       table {
         width: 100%;
@@ -54,4 +61,23 @@
         .then(data => {
           if (data.Houses && data.Houses.length) {
             // Sort houses by Score in descending order
-            data.Houses.sort((a, b) => (b.
+            data.Houses.sort((a, b) => (b.Score || 0) - (a.Score || 0));
+
+            let html = "<table><tbody>";
+            data.Houses.forEach((house) => {
+              const houseName = house.Name ? house.Name.charAt(0).toUpperCase() + house.Name.slice(1).toLowerCase() : "House";
+              const backgroundColor = houseColorMap[houseName] || "gray"; // Default color if name not found
+              html += `<tr class="house-row" style="background-color: ${backgroundColor};">
+                <td>${houseName}</td>
+                <td>${house.Score || 0}</td>
+              </tr>`;
+            });
+            html += "</tbody></table>";
+            html += '<div class="attrition">Powered by <a href="https://www.crittercoin.com/" target="_blank">CritterCoin</a></div>';
+            document.getElementById("cc_embed_houses").innerHTML = html;
+          }
+        })
+        .catch(console.error);
+    </script>
+</body>
+</html>

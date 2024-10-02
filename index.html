@@ -57,7 +57,9 @@
         text-align: right; /* Align score to the right */
       }
       .refresh-button {
-        margin: 1rem auto; /* Center button with margins */
+        position: absolute; /* Position button at the top right */
+        right: 20px; /* Right margin */
+        top: 20px; /* Top margin */
         padding: 1rem 2rem; /* Padding for the button */
         font-size: 1.5em; /* Button font size */
         background-color: #3273dc; /* Button background color */
@@ -72,10 +74,10 @@
     </style>
 </head>
 <body>
+    <button class="refresh-button" onclick="location.reload()">Refresh Points</button> <!-- Refresh button at top right -->
     <div id="cc_embed_houses">
         <h1>UCSI International School KL House Points</h1> <!-- Title with black background and white font -->
     </div>
-    <button class="refresh-button" onclick="location.reload()">Refresh</button> <!-- Refresh button -->
     <script>
       const orgID = 4910; // Adjust orgID as needed
 

@@ -23,6 +23,16 @@
         overflow: auto; /* Enable scrolling if necessary */
         display: flex;
         flex-direction: column; /* Allow flex layout for the table */
+        justify-content: flex-start; /* Align content at the start */
+      }
+      h1 {
+        text-align: center; /* Center the title */
+        font-size: 3em; /* Title font size */
+        margin: 1rem 0; /* Margin for spacing */
+        background-color: black; /* Title background color */
+        color: white; /* Title font color */
+        padding: 1rem; /* Padding for spacing */
+        border-radius: 8px; /* Rounded corners */
       }
       table {
         width: 100%;
@@ -35,6 +45,7 @@
         color: black; /* Font color for house names and scores */
         font-weight: bold; /* Make the font bold */
         vertical-align: middle; /* Center text vertically */
+        padding-left: 25%; /* Move house names over 1/4 of the way */
       }
       .house-row {
         border-radius: 8px; /* Add rounded corners */
@@ -42,7 +53,9 @@
     </style>
 </head>
 <body>
-    <div id="cc_embed_houses"></div>
+    <div id="cc_embed_houses">
+        <h1>UCSI International School KL House Points</h1> <!-- Title with black background and white font -->
+    </div>
     <script>
       const orgID = 4910; // Adjust orgID as needed
 
@@ -71,7 +84,7 @@
               </tr>`;
             });
             html += "</tbody></table>";
-            document.getElementById("cc_embed_houses").innerHTML = html;
+            document.getElementById("cc_embed_houses").innerHTML += html; // Append table to div
           }
         })
         .catch(console.error);

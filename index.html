@@ -28,6 +28,9 @@
         font-size: 11px;
         color: #999;
       }
+      .house-row {
+        border-radius: 8px; /* Add rounded corners */
+      }
     </style>
 </head>
 <body>
@@ -35,13 +38,24 @@
     <script>
       const orgID = 4910; // Adjust orgID as needed
 
+      // Function to generate a random color
+      function getRandomColor() {
+          const letters = '0123456789ABCDEF';
+          let color = '#';
+          for (let i = 0; i < 6; i++) {
+              color += letters[Math.floor(Math.random() * 16)];
+          }
+          return color;
+      }
+
       fetch(`https://crittercoinapi.azurewebsites.net/api/GetHouses?orgid=${orgID}&realtime=true`)
         .then(response => response.json())
         .then(data => {
           if (data.Houses && data.Houses.length) {
             let html = "<table><tbody>";
             data.Houses.forEach((house, index) => {
-              html += `<tr>
+              const color = getRandomColor(); // Get a random color for each house
+              html += `<tr class="house-row" style="background-color: ${color};">
                 <td>${index + 1}.</td>
                 <td>${house.Name || "House #" + (index + 1)}</td>
                 <td>${house.Score || 0}</td>

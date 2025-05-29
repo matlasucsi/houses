@@ -82,37 +82,54 @@
         </div>
     </div>
     <script>
-      const orgID = 4910; // Adjust orgID as needed
+const orgID = 4910; // Adjust orgID as needed
 
-      // Mapping of house names to specific colors
-      const houseColorMap = {
-          "Ambar": "yellow",
-          "Zamrud": "green",
-          "Delima": "red",
-          "Nilam": "blue"
-      };
+// Mapping of house names to specific colors — use "Amber" here, not "Ambar"
+const houseColorMap = {
+    "Amber": "yellow",
+    "Zamrud": "green",
+    "Delima": "red",
+    "Nilam": "blue"
+};
 
-      fetch(`https://crittercoinapi.azurewebsites.net/api/GetHouses?orgid=${orgID}&realtime=true`)
-        .then(response => response.json())
-        .then(data => {
-          if (data.Houses && data.Houses.length) {
-            // Sort houses by Score in descending order
-            data.Houses.sort((a, b) => (b.Score || 0) - (a.Score || 0));
+fetch(`https://crittercoinapi.azurewebsites.net/api/GetHouses?orgid=${orgID}&realtime=true`)
+  .then(response => response.json())
+  .then(data => {
+    if (data.Houses && data.Houses.length) {
+      // Sort houses by Score in descending order
+      data.Houses.sort((a, b) => (b.Score || 0) - (a.Score || 0));
 
-            let html = "<table><tbody>";
-            data.Houses.forEach((house) => {
-              const houseName = house.Name ? house.Name.charAt(0).toUpperCase() + house.Name.slice(1).toLowerCase() : "House";
-              const backgroundColor = houseColorMap[houseName] || "gray"; // Default color if name not found
-              html += `<tr class="house-row" style="background-color: ${backgroundColor};">
-                <td class="house-name">${houseName}</td>
-                <td class="house-score">${house.Score || 0}</td>
-              </tr>`;
-            });
-            html += "</tbody></table>";
-            document.getElementById("cc_embed_houses").innerHTML += html; // Append table to div
-          }
-        })
-        .catch(console.error);
+      let html = "<table><tbody>";
+      data.Houses.forEach((house) => {
+        let houseName = house.Name ? house.Name.charAt(0).toUpperCase() + house.Name.slice(1).toLowerCase() : "House";
+
+        // Replace 'Ambar' with 'Amber'
+        if (houseName === "Ambar") {
+          houseName = "Amber";
+        }
+
+        const backgroundColor = houseColorMap[houseName] || "gray"; // default color fallback
+        html += `<tr class="house-row" style="background-color: ${backgroundColor};">
+          <td class="house-name">${houseName}</td>
+          <td class="house-score">${house.Score || 0}</td>
+        </tr>`;
+      });
+      html += "</tbody></table>";
+
+      // **Important**: Clear previous content first, then add header + table
+      document.getElementById("cc_embed_houses").innerHTML = `
+        <div class="header-container">
+          <h1>UCSI International School KL House Points</h1>
+          <button class="refresh-button" onclick="location.reload()">Refresh Points</button>
+        </div>
+        ${html}
+      `;
+    }
+  })
+  .catch(console.error);
+
+
+        
     </script>
 </body>
 </html>

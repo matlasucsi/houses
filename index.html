@@ -102,6 +102,12 @@
             let html = "<table><tbody>";
             data.Houses.forEach((house) => {
               const houseName = house.Name ? house.Name.charAt(0).toUpperCase() + house.Name.slice(1).toLowerCase() : "House";
+
+                
+// Replace 'Ambar' with 'Amber'
+if (houseName === "Ambar") {
+  houseName = "Amber";
+}
               const backgroundColor = houseColorMap[houseName] || "gray"; // Default color if name not found
               html += `<tr class="house-row" style="background-color: ${backgroundColor};">
                 <td class="house-name">${houseName}</td>

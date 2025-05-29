@@ -1,89 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>House Points</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #f9f9f9;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      font-size: 1.1em;
-    }
-
-    td, th {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-
-    tr.house-row {
-      color: white;
-      font-weight: bold;
-    }
-
-    /* Optional: better contrast for yellow background */
-    tr[style*="yellow"] {
-      color: black;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CritterCoin Embed</title>
+    <style>
+      body, html {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: black; /* Set background to black */
+        color: #fff; /* Default text color to white */
+        height: 100%; /* Ensure body and html take full height */
+      }
+      a {
+        text-decoration: none;
+        color: #3273dc;
+      }
+      #cc_embed_houses {
+        width: 100%; /* Full width */
+        height: calc(100vh - 50px); /* Full height minus button height */
+        overflow: auto; /* Enable scrolling if necessary */
+        display: flex;
+        flex-direction: column; /* Allow flex layout for the table */
+        justify-content: flex-start; /* Align content at the start */
+      }
+      .header-container {
+        display: flex; /* Use flexbox for header layout */
+        justify-content: center; /* Center items horizontally */
+        align-items: center; /* Center items vertically */
+        padding: 1rem; /* Padding for spacing */
+        background-color: black; /* Header background color */
+      }
+      h1 {
+        font-size: 2.4em; /* Reduced title font size */
+        margin: 0; /* Remove margin */
+        color: white; /* Title font color */
+        margin-right: 20px; /* Space between title and button */
+      }
+      table {
+        width: 100%;
+        height: 80%; /* Table fills the available height */
+        border-collapse: collapse;
+        font-size: 4em; /* Doubled font size */
+      }
+      td {
+        padding: 2rem; /* Increased padding for taller boxes */
+        color: black; /* Font color for house names and scores */
+        font-weight: bold; /* Make the font bold */
+        vertical-align: middle; /* Center text vertically */
+      }
+      .house-row {
+        border-radius: 8px; /* Add rounded corners */
+      }
+      .house-name {
+        padding-left: 25%; /* Move house names over 1/4 of the way */
+      }
+      .house-score {
+        padding-right: 25%; /* Set right padding to 50% */
+        text-align: right; /* Align score to the right */
+      }
+      .refresh-button {
+        padding: 1rem 2rem; /* Padding for the button */
+        font-size: 1.5em; /* Button font size */
+        background-color: white; /* Button background color */
+        color: black; /* Button text color */
+        border: none; /* Remove border */
+        border-radius: 8px; /* Rounded corners for button */
+        cursor: pointer; /* Pointer cursor on hover */
+      }
+      .refresh-button:hover {
+        background-color: #f0f0f0; /* Light gray on hover */
+      }
+    </style>
 </head>
 <body>
-  <h1>Live House Points</h1>
-  <div id="cc_embed_houses">Loading...</div>
+    <div id="cc_embed_houses">
+        <div class="header-container">
+            <h1>UCSI International School KL House Points</h1>
+            <button class="refresh-button" onclick="location.reload()">Refresh Points</button> <!-- Refresh button -->
+        </div>
+    </div>
+    <script>
+      const orgID = 4910; // Adjust orgID as needed
 
-  <script>
-    const orgID = 4910; // Your organization ID
+      // Mapping of house names to specific colors
+      const houseColorMap = {
+          "Ambar": "yellow",
+          "Zamrud": "green",
+          "Delima": "red",
+          "Nilam": "blue"
+      };
 
-    // Corrected house name and color mapping
-    const houseColorMap = {
-      "Amber": "yellow",     // was "Ambar", now corrected
-      "Zamrud": "green",
-      "Delima": "red",
-      "Nilam": "blue"
-    };
+      fetch(`https://crittercoinapi.azurewebsites.net/api/GetHouses?orgid=${orgID}&realtime=true`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.Houses && data.Houses.length) {
+            // Sort houses by Score in descending order
+            data.Houses.sort((a, b) => (b.Score || 0) - (a.Score || 0));
 
-    fetch(`https://crittercoinapi.azurewebsites.net/api/GetHouses?orgid=${orgID}&realtime=true`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.Houses && data.Houses.length) {
-          // Sort houses by score descending
-          data.Houses.sort((a, b) => (b.Score || 0) - (a.Score || 0));
-
-          let html = "<table><tbody>";
-          data.Houses.forEach(house => {
-            let houseName = house.Name || "House";
-
-            // Format capitalization
-            houseName = houseName.charAt(0).toUpperCase() + houseName.slice(1).toLowerCase();
-
-            // Replace "Ambar" with "Amber"
-            if (houseName === "Ambar") houseName = "Amber";
-
-            const color = houseColorMap[houseName] || "gray";
-
-            html += `
-              <tr class="house-row" style="background-color: ${color};">
+            let html = "<table><tbody>";
+            data.Houses.forEach((house) => {
+              const houseName = house.Name ? house.Name.charAt(0).toUpperCase() + house.Name.slice(1).toLowerCase() : "House";
+              const backgroundColor = houseColorMap[houseName] || "gray"; // Default color if name not found
+              html += `<tr class="house-row" style="background-color: ${backgroundColor};">
                 <td class="house-name">${houseName}</td>
                 <td class="house-score">${house.Score || 0}</td>
               </tr>`;
-          });
-          html += "</tbody></table>";
-          document.getElementById("cc_embed_houses").innerHTML = html;
-        } else {
-          document.getElementById("cc_embed_houses").innerHTML = "No data available.";
-        }
-      })
-      .catch(error => {
-        console.error(error);
-        document.getElementById("cc_embed_houses").innerHTML = "Failed to load data.";
-      });
-  </script>
+            });
+            html += "</tbody></table>";
+            document.getElementById("cc_embed_houses").innerHTML += html; // Append table to div
+          }
+        })
+        .catch(console.error);
+    </script>
 </body>
 </html>

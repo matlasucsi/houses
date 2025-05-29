@@ -103,9 +103,18 @@ fetch(`https://crittercoinapi.azurewebsites.net/api/GetHouses?orgid=${orgID}&rea
       data.Houses.forEach((house) => {
         let houseName = house.Name ? house.Name.charAt(0).toUpperCase() + house.Name.slice(1).toLowerCase() : "House";
 
-        // Replace 'Ambar' with 'Amber'
+        // Replace house names with new names
         if (houseName === "Ambar") {
           houseName = "Amber";
+        }
+          if (houseName === "Delima") {
+          houseName = "Ruby";
+        }
+          if (houseName === "Nilam") {
+          houseName = "Sapphire";
+        }
+          if (houseName === "Zamrud") {
+          houseName = "Emerald";
         }
 
         const backgroundColor = houseColorMap[houseName] || "gray"; // default color fallback

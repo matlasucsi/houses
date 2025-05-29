@@ -4,34 +4,46 @@
   <meta charset="UTF-8">
   <title>House Points</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f9f9f9;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 1em;
+      margin-top: 20px;
+      font-size: 1.1em;
     }
 
-    th, td {
+    td, th {
       padding: 12px;
       text-align: left;
       border-bottom: 1px solid #ddd;
-      color: white;
-      font-size: 1.2em;
     }
 
-    .house-row {
+    tr.house-row {
+      color: white;
       font-weight: bold;
+    }
+
+    /* Optional: better contrast for yellow background */
+    tr[style*="yellow"] {
+      color: black;
     }
   </style>
 </head>
 <body>
-  <div id="cc_embed_houses"></div>
+  <h1>Live House Points</h1>
+  <div id="cc_embed_houses">Loading...</div>
 
   <script>
-    const orgID = 4910; // Replace with your organization ID if different
+    const orgID = 4910; // Your organization ID
 
-    // Mapping of house names to colors
+    // Corrected house name and color mapping
     const houseColorMap = {
-      "Amber": "yellow",
+      "Amber": "yellow",     // was "Ambar", now corrected
       "Zamrud": "green",
       "Delima": "red",
       "Nilam": "blue"
@@ -41,31 +53,37 @@
       .then(response => response.json())
       .then(data => {
         if (data.Houses && data.Houses.length) {
-          // Sort houses by score in descending order
+          // Sort houses by score descending
           data.Houses.sort((a, b) => (b.Score || 0) - (a.Score || 0));
 
           let html = "<table><tbody>";
-          data.Houses.forEach((house) => {
-            let houseName = house.Name
-              ? house.Name.charAt(0).toUpperCase() + house.Name.slice(1).toLowerCase()
-              : "House";
+          data.Houses.forEach(house => {
+            let houseName = house.Name || "House";
+
+            // Format capitalization
+            houseName = houseName.charAt(0).toUpperCase() + houseName.slice(1).toLowerCase();
 
             // Replace "Ambar" with "Amber"
             if (houseName === "Ambar") houseName = "Amber";
 
-            const backgroundColor = houseColorMap[houseName] || "gray";
+            const color = houseColorMap[houseName] || "gray";
 
-            html += `<tr class="house-row" style="background-color: ${backgroundColor};">
-              <td class="house-name">${houseName}</td>
-              <td class="house-score">${house.Score || 0}</td>
-            </tr>`;
+            html += `
+              <tr class="house-row" style="background-color: ${color};">
+                <td class="house-name">${houseName}</td>
+                <td class="house-score">${house.Score || 0}</td>
+              </tr>`;
           });
           html += "</tbody></table>";
-
           document.getElementById("cc_embed_houses").innerHTML = html;
+        } else {
+          document.getElementById("cc_embed_houses").innerHTML = "No data available.";
         }
       })
-      .catch(console.error);
+      .catch(error => {
+        console.error(error);
+        document.getElementById("cc_embed_houses").innerHTML = "Failed to load data.";
+      });
   </script>
 </body>
 </html>
